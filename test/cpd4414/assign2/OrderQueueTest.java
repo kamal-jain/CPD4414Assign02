@@ -14,7 +14,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package cpd4414.assign2;
 
 import cpd4414.assign2.OrderQueue;
@@ -33,22 +32,22 @@ import org.junit.Test;
  * @author Len Payne <len.payne@lambtoncollege.ca>
  */
 public class OrderQueueTest {
-    
+
     public OrderQueueTest() {
     }
-    
+
     @BeforeClass
     public static void setUpClass() {
     }
-    
+
     @AfterClass
     public static void tearDownClass() {
     }
-    
+
     @Before
     public void setUp() {
     }
-    
+
     @After
     public void tearDown() {
     }
@@ -60,41 +59,38 @@ public class OrderQueueTest {
         order.addPurchase(new Purchase("PROD0004", 450));
         order.addPurchase(new Purchase("PROD0006", 250));
         orderQueue.add(order);
-        
+
         long expResult = new Date().getTime();
         long result = order.getTimeReceived().getTime();
         assertTrue(Math.abs(result - expResult) < 1000);
     }
-    
-    
 
- @Test
+    @Test
     public void testWhenNoCustomerExistsThenThrownAnException() {
         boolean didThrow = false;
-            OrderQueue orderQueue = new OrderQueue();
+        OrderQueue orderQueue = new OrderQueue();
         Order order = new Order("", "");
         order.addPurchase(new Purchase("PROD0004", 450));
         order.addPurchase(new Purchase("PROD0006", 250));
-        try{
-           
+        try {
+
             orderQueue.add(order);
-        }
-        catch(Exception ex){
+        } catch (Exception ex) {
             didThrow = true;
         }
         assertTrue(didThrow);
     }
+
     @Test
     public void testWhenNoPurchasesThenThrownAnException() {
-         boolean didThrow = false;
-         OrderQueue orderQueue = new OrderQueue();
+        boolean didThrow = false;
+        OrderQueue orderQueue = new OrderQueue();
         Order order = new Order("First", "Order");
         order.addPurchase(new Purchase("AB0001", 150));
         order.addPurchase(new Purchase("AB0002", 250));
-            try{
+        try {
             orderQueue.add(order);
-        }
-        catch(Exception ex){
+        } catch (Exception ex) {
             didThrow = true;
         }
         assertTrue(didThrow);
@@ -112,6 +108,26 @@ public class OrderQueueTest {
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
+
+    @Test
+    public void testGetNextWhenOrdersInSystemThenGetNextAvailable() throws OrderQueue.NoCustomerException, OrderQueue.NoPurchasesException, Exception {
+        OrderQueue orderQueue = new OrderQueue();
+        Order order = new Order("Order1", "NewOrder");
+        order.addPurchase(new Purchase("Entry", 8));
+        orderQueue.add(order);
+        Order order1 = new Order("Order2", "NewOrder1");
+        order1.addPurchase(new Purchase("Entry", 4));
+        orderQueue.add(order1);
+
+        Order result = orderQueue.next();
+        assertEquals(result, order);
+        assertNull(result.getTimeProcessed());
+    }
+
+    @Test
+    public void testGetNextWhenNoOrdersInSystemThenReturnNull() throws OrderQueue.NoCustomerException, OrderQueue.NoPurchasesException {
+        OrderQueue orderQueue = new OrderQueue();
+        Order result = orderQueue.next();
+        assertNull(result);
+    }
 }
-
-
