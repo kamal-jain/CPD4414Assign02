@@ -130,4 +130,32 @@ public class OrderQueueTest {
         Order result = orderQueue.next();
         assertNull(result);
     }
+    @Test
+    public void testProcessWhenTimeReceivedIsSetThenSetTimeProcessedToNow() throws OrderQueue.NoCustomerException, OrderQueue.NoPurchasesException, OrderQueue.NoTimeReceivedException, Exception{
+        OrderQueue orderQueue = new OrderQueue();
+        Order order = new Order("Order", "NewOrder");
+        order.addPurchase(new Purchase("", 15));
+        orderQueue.add(order);
+        Order order1 = new Order("Order1", "NewOrder1");
+        order1.addPurchase(new Purchase("", 25));
+        orderQueue.add(order1);
+
+        Order next = orderQueue.next();
+        orderQueue.process(next);
+
+        long expResult = new Date().getTime();
+        long result = next.getTimeProcessed().getTime();
+        assertTrue(Math.abs(result - expResult) < 1000);
+    }
+      @Test
+    public void testProcessWhenTimeReceivedNotSetThenThrowException() {
+        boolean didThrow = false;
+        OrderQueue orderQueue = new OrderQueue();
+        Order order = new Order("Orde", "NewOrder");
+        order.addPurchase(new Purchase("", 15));
+
+        orderQueue.process(order);
+
+        assertTrue(didThrow);
+    }
 }
