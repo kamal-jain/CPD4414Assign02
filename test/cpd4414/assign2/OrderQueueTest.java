@@ -88,9 +88,9 @@ public class OrderQueueTest {
     public void testWhenNoPurchasesThenThrownAnException() {
          boolean didThrow = false;
          OrderQueue orderQueue = new OrderQueue();
-        Order order = new Order("Sample", "Order");
-        order.addPurchase(new Purchase("PROD0004", 450));
-        order.addPurchase(new Purchase("PROD0006", 250));
+        Order order = new Order("First", "Order");
+        order.addPurchase(new Purchase("AB0001", 150));
+        order.addPurchase(new Purchase("AB0002", 250));
             try{
             orderQueue.add(order);
         }
@@ -104,7 +104,7 @@ public class OrderQueueTest {
      * Test of add method, of class OrderQueue.
      */
     @Test
-    public void testAdd() {
+    public void testAdd() throws Exception {
         System.out.println("add");
         Order order = null;
         OrderQueue instance = new OrderQueue();
