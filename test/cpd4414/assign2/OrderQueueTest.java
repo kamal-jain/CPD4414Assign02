@@ -66,4 +66,52 @@ public class OrderQueueTest {
         assertTrue(Math.abs(result - expResult) < 1000);
     }
     
+    
+
+ @Test
+    public void testWhenNoCustomerExistsThenThrownAnException() {
+        boolean didThrow = false;
+            OrderQueue orderQueue = new OrderQueue();
+        Order order = new Order("", "");
+        order.addPurchase(new Purchase("PROD0004", 450));
+        order.addPurchase(new Purchase("PROD0006", 250));
+        try{
+           
+            orderQueue.add(order);
+        }
+        catch(Exception ex){
+            didThrow = true;
+        }
+        assertTrue(didThrow);
+    }
+    @Test
+    public void testWhenNoPurchasesThenThrownAnException() {
+         boolean didThrow = false;
+         OrderQueue orderQueue = new OrderQueue();
+        Order order = new Order("Sample", "Order");
+        order.addPurchase(new Purchase("PROD0004", 450));
+        order.addPurchase(new Purchase("PROD0006", 250));
+            try{
+            orderQueue.add(order);
+        }
+        catch(Exception ex){
+            didThrow = true;
+        }
+        assertTrue(didThrow);
+    }
+
+    /**
+     * Test of add method, of class OrderQueue.
+     */
+    @Test
+    public void testAdd() {
+        System.out.println("add");
+        Order order = null;
+        OrderQueue instance = new OrderQueue();
+        instance.add(order);
+        // TODO review the generated test code and remove the default call to fail.
+        fail("The test case is a prototype.");
+    }
 }
+
+
